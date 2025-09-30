@@ -2,6 +2,12 @@
 
 A Next.js application with user management features built using the App Router, Tailwind CSS, and ShadCN UI components.
 
+## Design Reference
+
+📐 **Figma Design**: [View Design in Figma](https://www.figma.com/design/kPmbTQReVK7iVReSVMIyUI/frontend-assignement?node-id=0-1&t=IqP0bt1mttosLPRI-1)
+
+This project is based on the provided Figma design specifications.
+
 ## Features
 
 - **User Management**: Complete CRUD operations for users
