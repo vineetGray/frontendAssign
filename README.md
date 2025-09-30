@@ -1,36 +1,171 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Frontend Assignment
+
+A Next.js application with user management features built using the App Router, Tailwind CSS, and ShadCN UI components.
+
+## Features
+
+- **User Management**: Complete CRUD operations for users
+- **Search & Filter**: Search users by name/role and filter by skills
+- **Responsive Design**: Mobile-first design with Tailwind CSS
+- **Modern UI**: Beautiful components using ShadCN UI
+- **API Routes**: RESTful API endpoints for user operations
+- **In-Memory Storage**: No database required - data stored in memory
+
+## Tech Stack
+
+- **Framework**: Next.js 15 with App Router
+- **Language**: JavaScript
+- **Styling**: Tailwind CSS
+- **UI Components**: ShadCN UI
+- **Icons**: Lucide React
+- **Fonts**: Geist Sans & Geist Mono
+
+## Project Structure
+
+```
+frontend-assignment/
+├── app/
+│   ├── api/
+│   │   └── users/
+│   │       ├── route.js          # GET, POST /api/users
+│   │       └── [id]/
+│   │           └── route.js       # PUT, DELETE /api/users/[id]
+│   ├── profile/
+│   │   └── page.js               # User profiles page
+│   ├── layout.js                 # Root layout
+│   └── page.js                   # Homepage
+├── lib/
+│   └── usersData.js              # In-memory user data
+├── types/
+│   └── index.js                  # User interface definition
+├── components/
+│   └── ui/                       # ShadCN UI components
+└── public/
+    └── reference.png             # Placeholder reference image
+```
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Node.js 18.18.0 or later
+- npm, yarn, pnpm, or bun
+
+### Installation
+
+1. **Clone the repository**
+
+   ```bash
+   git clone <repository-url>
+   cd frontend-assignment
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   npm install
+   # or
+   yarn install
+   # or
+   pnpm install
+   ```
+
+3. **Run the development server**
+
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   # or
+   pnpm dev
+   ```
+
+4. **Open your browser**
+
+   Navigate to [http://localhost:3000](http://localhost:3000) to see the application.
+
+## Usage
+
+### Homepage
+
+- Welcome message with project overview
+- "Go to Profile" button to navigate to user management
+
+### User Profiles Page
+
+- **View Users**: Browse all users in a responsive grid
+- **Search**: Search users by name or role
+- **Filter**: Filter users by skills
+- **Add User**: Click "Add New User" to create a new user
+- **Edit User**: Click "Edit" on any user card to modify details
+- **Delete User**: Click "Delete" to remove a user
+
+### API Endpoints
+
+- `GET /api/users` - Get all users
+- `POST /api/users` - Create a new user
+- `PUT /api/users/[id]` - Update a user
+- `DELETE /api/users/[id]` - Delete a user
+
+## User Data Structure
+
+```javascript
+{
+  id: string,
+  name: string,
+  role: string,
+  avatar: string,
+  skills: string[]
+}
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Available Scripts
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Deployment
 
-## Learn More
+This application can be deployed to any platform that supports Next.js:
 
-To learn more about Next.js, take a look at the following resources:
+- **Vercel** (recommended)
+- **Netlify**
+- **Railway**
+- **Heroku**
+- **AWS Amplify**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Assignment Requirements
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+This boilerplate application includes:
 
-## Deploy on Vercel
+✅ Next.js with App Router  
+✅ JavaScript (no TypeScript)  
+✅ Tailwind CSS configured  
+✅ ShadCN UI components installed  
+✅ Basic homepage with navigation  
+✅ User management with CRUD operations  
+✅ Search and filter functionality  
+✅ Responsive design  
+✅ API routes for user operations  
+✅ In-memory data storage  
+✅ README with setup instructions
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Next Steps
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This is a boilerplate application ready for assignment completion. Students should:
+
+1. Implement the `/profile` route (already created)
+2. Add any additional features as required
+3. Customize styling and components
+4. Add tests if needed
+5. Deploy to a hosting platform
+
+## Contributing
+
+This is an assignment boilerplate. Please follow the assignment guidelines for any modifications.
+
+## License
+
+This project is for educational purposes as part of a frontend assignment.
