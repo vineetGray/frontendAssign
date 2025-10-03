@@ -651,7 +651,6 @@
 //     </div>
 //   );
 // }
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -764,7 +763,12 @@ export default function ProfilePage() {
       const response = await fetch("/api/users");
       if (!response.ok) throw new Error("Failed to fetch users");
       const data = await response.json();
-      setUsers(data);
+      // Ensure unique IDs by adding index if needed
+      const usersWithUniqueIds = data.map((user, index) => ({
+        ...user,
+        uniqueId: `${user.id}-${index}` // Create a unique identifier
+      }));
+      setUsers(usersWithUniqueIds);
     } catch (error) {
       console.error("Error fetching users:", error);
     }
@@ -788,7 +792,12 @@ export default function ProfilePage() {
 
       if (response.ok) {
         const newUser = await response.json();
-        setUsers([...users, newUser]);
+        // Add unique ID to the new user
+        const userWithUniqueId = {
+          ...newUser,
+          uniqueId: `${newUser.id}-${Date.now()}` // Use timestamp for uniqueness
+        };
+        setUsers([...users, userWithUniqueId]);
         setIsAddingUser(false);
         setFormData({ name: "", role: "", avatar: "", skills: [] });
         showNotification("Profile added successfully!", "success");
@@ -820,7 +829,11 @@ export default function ProfilePage() {
       if (response.ok) {
         const updatedUser = await response.json();
         setUsers(
-          users.map((user) => (user.id === editingUser.id ? updatedUser : user))
+          users.map((user) => 
+            user.uniqueId === editingUser.uniqueId 
+              ? { ...updatedUser, uniqueId: user.uniqueId } // Preserve the unique ID
+              : user
+          )
         );
         setEditingUser(null);
         setFormData({ name: "", role: "", avatar: "", skills: [] });
@@ -1095,7 +1108,7 @@ export default function ProfilePage() {
                         <div className="flex flex-wrap gap-2 p-3 bg-white rounded-lg border border-gray-200 min-h-12">
                           {formData.skills.map((skill, index) => (
                             <span
-                              key={index}
+                              key={`${skill}-${index}`} // Use skill and index for unique key
                               className="inline-flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-blue-50 to-blue-100 text-blue-800 text-sm rounded-full border border-blue-200 font-medium shadow-sm"
                             >
                               <span>{skill}</span>
@@ -1238,35 +1251,27 @@ export default function ProfilePage() {
                         <div className="p-3">
                           <div className="mb-2 text-sm font-semibold text-gray-700">Select a skill</div>
                           <div className="grid grid-cols-1 gap-1 max-h-48 overflow-y-auto">
-                            {allSkills.length > 0 ? (
-                              allSkills.map((skill) => (
-                                <div
-                                  key={skill}
-                                  className={`px-3 py-2 text-sm cursor-pointer rounded-md hover:bg-blue-50 transition-colors ${
-                                    selectedSkill === skill 
-                                      ? 'bg-blue-100 text-blue-800 border border-blue-200' 
-                                      : 'text-gray-700'
-                                  }`}
-                                  onClick={() => {
-                                    setSelectedSkill(skill);
-                                    setShowSkillDropdown(false);
-                                  }}
-                                >
-                                  <div className="flex items-center gap-2">
-                                    {selectedSkill === skill && (
-                                      <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-                                    )}
-                                    {skill}
-                                  </div>
+                            {allSkills.map((skill, index) => (
+                              <div
+                                key={`${skill}-${index}`} // Use skill and index for unique key
+                                className={`px-3 py-2 text-sm cursor-pointer rounded-md hover:bg-blue-50 transition-colors ${
+                                  selectedSkill === skill 
+                                    ? 'bg-blue-100 text-blue-800 border border-blue-200' 
+                                    : 'text-gray-700'
+                                }`}
+                                onClick={() => {
+                                  setSelectedSkill(skill);
+                                  setShowSkillDropdown(false);
+                                }}
+                              >
+                                <div className="flex items-center gap-2">
+                                  {selectedSkill === skill && (
+                                    <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+                                  )}
+                                  {skill}
                                 </div>
-                              ))
-                            ) : (
-                              <div className="px-3 py-4 text-sm text-gray-500 text-center bg-gray-50 rounded-lg">
-                                <User className="h-8 w-8 text-gray-300 mx-auto mb-2" />
-                                No skills available
-                                <div className="text-xs mt-1">Add profiles with skills to filter</div>
                               </div>
-                            )}
+                            ))}
                           </div>
                         </div>
                       </div>
@@ -1319,10 +1324,10 @@ export default function ProfilePage() {
               </div>
             </div>
 
-            {/* Users Grid */}
+            {/* Users Grid - FIXED: Use uniqueId instead of id */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredUsers.map((user) => (
-                <Card key={user.id} className="group hover:shadow-xl transition-all duration-300 relative border border-gray-200/50 overflow-hidden bg-gradient-to-br from-white to-blue-50/30">
+                <Card key={user.uniqueId} className="group hover:shadow-xl transition-all duration-300 relative border border-gray-200/50 overflow-hidden bg-gradient-to-br from-white to-blue-50/30">
                   {/* Gradient Border Effect */}
                   <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 opacity-0 group-hover:opacity-5 transition-opacity duration-300"></div>
                   
@@ -1344,13 +1349,13 @@ export default function ProfilePage() {
 
                   <CardHeader className="text-center pb-4 pt-6">
                     <div className="relative w-20 h-20 mx-auto mb-4">
-                      {user.avatar && !imageErrors[user.id] ? (
+                      {user.avatar && !imageErrors[user.uniqueId] ? (
                         <Image
                           src={user.avatar}
                           alt={user.name}
                           fill
                           className="rounded-full object-cover border-4 border-white shadow-lg"
-                          onError={() => handleImageError(user.id)}
+                          onError={() => handleImageError(user.uniqueId)}
                         />
                       ) : (
                         <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center border-4 border-white shadow-lg">
@@ -1370,7 +1375,7 @@ export default function ProfilePage() {
                         <div className="flex flex-wrap gap-2">
                           {user.skills.map((skill, index) => (
                             <span
-                              key={index}
+                              key={`${user.uniqueId}-${skill}-${index}`} // Use unique combination
                               className="px-2 py-1 bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 text-xs rounded-full font-medium border border-blue-200"
                             >
                               {skill}

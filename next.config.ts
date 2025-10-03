@@ -4,20 +4,24 @@ import type { NextConfig } from "next";
 //   /* config options here */
 // };
 // /** @type {import('next').NextConfig} */
+/** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
+    domains: [
+      'plus.unsplash.com',
+      'images.unsplash.com',
+      'example.com',
+      'via.placeholder.com'
+    ],
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "images.unsplash.com",
-        port: "",
-        pathname: "/**", // allow any path on that hostname
+        protocol: 'https',
+        hostname: '**',
       },
     ],
   },
-};
+}
 
-module.exports = nextConfig;
 
 
 export default nextConfig;
